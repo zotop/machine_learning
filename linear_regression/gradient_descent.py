@@ -59,6 +59,10 @@ for i in range(0, 1000):
 
 regression = [ min_o0 + min_o1 * x[i] for i in range(n)]
 
+print 'Theta 0: {}'.format(min_o0)
+print 'Theta 1: {}'.format(min_o1)
+print 'Minimum cost: {}'.format(min_cost)
+
 plt.title('Gradient Descent')
 plt.xlabel('x')
 plt.ylabel('y')
