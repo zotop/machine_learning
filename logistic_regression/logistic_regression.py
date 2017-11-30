@@ -40,7 +40,7 @@ def get_rejections(admissions, exam_1_scores, exam_2_scores):
 
 
 def sigmoid(x, theta):
-	z = -theta.transpose().dot(x)[0]
+	z = theta.transpose().dot(x)[0]
 	return float(1)/( 1 + np.exp(-z))
 
 def cost(n, x, y, theta):
