@@ -43,7 +43,8 @@ def sigmoid(x, theta):
 	z = theta.transpose().dot(x)[0]
 	return float(1)/( 1 + np.exp(-z))
 
-def cost(n, x, y, theta):
+def cost(x, y, theta):
+	n = len(x)
 	return (float(1)/n) * sum([-y[i] * np.log(sigmoid(x[i], theta)) - (1 - y[i]) * np.log(1 - sigmoid(x[i], theta)) for i in range(n)])
 
 #### MAIN ####
@@ -63,7 +64,7 @@ number_of_features = 3
 
 
 initial_theta = np.zeros((number_of_features, 1))
-print 'Cost with initial thetas: {}'.format(cost(n, x, y, initial_theta)[0])
+print 'Cost with initial thetas: {}'.format(cost(x, y, initial_theta)[0])
 
 plt.title('Logistic Regression')
 plt.xlabel('Exam 1 Score')
