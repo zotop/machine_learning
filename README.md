@@ -2,3 +2,4 @@
 
 - Gradient Descent
 - Normal Equation
+- Logistic Regression
