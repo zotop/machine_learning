@@ -58,6 +58,13 @@ def cost(theta, x, y):
 	return 	cost_value
 
 
+def predict(theta, score_1, score_2):
+	x = [1, score_1, score_2]
+	z = theta.transpose().dot(x)
+	return sigmoid(z)
+
+
+
 #### MAIN ####
 
 exam_1_scores, exam_2_scores, admissions = get_data("data.txt")
@@ -80,6 +87,8 @@ optimal_theta = fmin(cost, x0=initial_theta, args=(x,y))
 print 'Optimal Thetas: {}'.format(optimal_theta)
 
 print 'Cost with optimal thetas: {}'.format(cost(optimal_theta, x, y)[0])
+
+print 'Prediction: {}'.format(predict(optimal_theta, 45, 85))
 
 plt.title('Logistic Regression')
 plt.xlabel('Exam 1 Score')
