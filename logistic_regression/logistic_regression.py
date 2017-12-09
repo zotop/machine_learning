@@ -1,6 +1,8 @@
 import matplotlib.pyplot as plt
 import numpy as np
-from numpy.linalg import inv
+from scipy.optimize import fmin
+
+np.seterr(invalid='ignore')
 
 def get_data(file_name):
   	exam_1_scores = []
@@ -39,13 +41,22 @@ def get_rejections(admissions, exam_1_scores, exam_2_scores):
 	return rejected_exam_1_scores, rejected_exam_2_scores		 
 
 
-def sigmoid(x, theta):
-	z = theta.transpose().dot(x)[0]
+def sigmoid(z):
 	return float(1)/( 1 + np.exp(-z))
 
-def cost(x, y, theta):
+def cost(theta, x, y):
 	n = len(x)
-	return (float(1)/n) * sum([-y[i] * np.log(sigmoid(x[i], theta)) - (1 - y[i]) * np.log(1 - sigmoid(x[i], theta)) for i in range(n)])
+	cost_value = 0
+
+	for i in range(n):
+		sigmoid_value =  sigmoid(theta.transpose().dot(np.column_stack([x[i]])))
+		term1 = y[i] * np.log(sigmoid_value)
+		term2 = (1 - y[i]) * np.log(1 - sigmoid_value)
+		cost_value = cost_value + term1 + term2
+
+	cost_value = cost_value * (-float(1)/n)	
+	return 	cost_value
+
 
 #### MAIN ####
 
@@ -62,9 +73,13 @@ y = np.column_stack([admissions])
 x_transpose = x.transpose()
 number_of_features = 3
 
-
 initial_theta = np.zeros((number_of_features, 1))
-print 'Cost with initial thetas: {}'.format(cost(x, y, initial_theta)[0])
+print 'Cost with initial thetas: {}'.format(cost(initial_theta, x, y)[0])
+
+optimal_theta = fmin(cost, x0=initial_theta, args=(x,y))
+print 'Optimal Thetas: {}'.format(optimal_theta)
+
+print 'Cost with optimal thetas: {}'.format(cost(optimal_theta, x, y)[0])
 
 plt.title('Logistic Regression')
 plt.xlabel('Exam 1 Score')
@@ -73,6 +88,3 @@ plt.scatter(admitted_exam_1_scores, admitted_exam_2_scores, marker='*', color='b
 plt.scatter(rejected_exam_1_scores, rejected_exam_2_scores, marker='x', color='r', label='Rejected')
 plt.legend(loc='upper right');
 plt.show()    
-
-
-
