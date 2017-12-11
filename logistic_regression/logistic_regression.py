@@ -2,21 +2,6 @@ import matplotlib.pyplot as plt
 import numpy as np
 from scipy.optimize import fmin
 
-np.seterr(invalid='ignore')
-
-def get_data(file_name):
-  	exam_1_scores = []
-	exam_2_scores = []
-	admissions = []
-	with open(file_name, "r") as lines:
-		for line in lines:
-			split_line = line.strip().split(',')
-			exam_1_scores.append(float(split_line[0]))
-			exam_2_scores.append(float(split_line[1]))
-			admissions.append(float(split_line[2]))	
-	return exam_1_scores, exam_2_scores, admissions		
-
-
 def get_admissions(admissions, exam_1_scores, exam_2_scores):
 	admitted_exam_1_scores = []
 	admitted_exam_2_scores = []
@@ -28,7 +13,6 @@ def get_admissions(admissions, exam_1_scores, exam_2_scores):
 	
 	return admitted_exam_1_scores, admitted_exam_2_scores		
 
-
 def get_rejections(admissions, exam_1_scores, exam_2_scores):
 	rejected_exam_1_scores = []
 	rejected_exam_2_scores = []
@@ -39,7 +23,6 @@ def get_rejections(admissions, exam_1_scores, exam_2_scores):
 			rejected_exam_2_scores.append(exam_2_scores[i])
 
 	return rejected_exam_1_scores, rejected_exam_2_scores		 
-
 
 def sigmoid(z):
 	return float(1)/( 1 + np.exp(-z))
@@ -64,20 +47,19 @@ def predict(theta, score_1, score_2):
 	return sigmoid(z)
 
 
-
 #### MAIN ####
 
-exam_1_scores, exam_2_scores, admissions = get_data("data.txt")
+data = np.loadtxt('data.txt', delimiter=',') 
+exam_1_scores = data[:, 0:1]
+exam_2_scores = data[:, 1:2]
+admissions = data[:, 2:3]
+
 admitted_exam_1_scores, admitted_exam_2_scores = get_admissions(admissions, exam_1_scores, exam_2_scores)
 rejected_exam_1_scores, rejected_exam_2_scores = get_rejections(admissions, exam_1_scores, exam_2_scores)
 
 n = len(admissions)
-x0 = np.ones((n, 1))
-x1 = np.column_stack([exam_1_scores])
-x2 = np.column_stack([exam_2_scores])
-x = np.column_stack((x0, x1, x2))
+x = np.concatenate((np.ones((n, 1)) , exam_1_scores, exam_2_scores), axis=1) 
 y = np.column_stack([admissions])
-x_transpose = x.transpose()
 number_of_features = 3
 
 initial_theta = np.zeros((number_of_features, 1))
