@@ -13,16 +13,15 @@ def cost(theta, x, y):
 		sigmoid_value =  sigmoid(theta.transpose().dot(np.column_stack([x[i]])))
 		term1 = y[i] * np.log(sigmoid_value)
 		term2 = (1 - y[i]) * np.log(1 - sigmoid_value)
-		cost_value = cost_value + term1 + term2
+		cost_value += term1 + term2
 
-	cost_value = cost_value * (-float(1)/n)	
+	cost_value *=  (-float(1)/n)	
 	return 	cost_value
 
 def predict(theta, score_1, score_2):
 	x = [1, score_1, score_2]
 	z = theta.transpose().dot(x)
 	return sigmoid(z)
-
 
 #### MAIN ####
 
