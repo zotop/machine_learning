@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 import numpy as np
+import mapfeature as mp
 
 #### MAIN ####
 
@@ -16,6 +17,7 @@ rejected = np.where(results == 0)[0]
 rejected_test_1_result = test_1[rejected]
 rejected_test_2_result = test_2[rejected]
 
+print mp.map_feature(test_1, test_2)
 
 plt.title('Microchip QA')
 plt.xlabel('Test 1')
