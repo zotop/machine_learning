@@ -12,4 +12,4 @@ initial_theta = np.zeros((x.shape[1], 1))
 lambda_value = 0.1
 initial_theta = np.zeros((n + 1, 1))
 
-min_result = opt.minimize(cf.cost, x0=initial_theta, args=(x, (y%10==0).astype(int).transpose()[0], lambda_value), options={'disp': True, 'maxiter':10}, method="BFGS")
+min_result = opt.minimize(cf.cost, x0=initial_theta, args=(x, (y%10==0).astype(int).transpose()[0], lambda_value), options={'disp': True, 'maxiter':13}, method="Newton-CG", jac=True)
